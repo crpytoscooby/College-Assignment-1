@@ -1,0 +1,189 @@
+mysql> CREATE DATABASE BANK;
+Query OK, 1 row affected (0.12 sec)
+
+mysql> USE BANK;
+Database changed
+mysql> CREATE TABLE account (
+    -> acc_no INT(20),
+    -> name VARCHAR(20),
+    -> amount INT(20));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO account VALUE
+    -> (1, "Sophia", 940050),
+    -> (2, "Jacob", 824327),
+    -> (3, "Elizabeth", 837502),
+    -> (4, "Noah", 878397),
+    -> (5, "Christopher", 752528);
+Query OK, 5 rows affected (0.04 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM account;
++--------+-------------+--------+
+| acc_no | name        | amount |
++--------+-------------+--------+
+|      1 | Sophia      | 940050 |
+|      2 | Jacob       | 824327 |
+|      3 | Elizabeth   | 837502 |
+|      4 | Noah        | 878397 |
+|      5 | Christopher | 752528 |
++--------+-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE account_logs (
+    -> acc_no INT(20),
+    -> name VARCHAR(20),
+    -> amount INT(20),
+    -> tran_type VARCHAR(20),
+    -> tran_time timestamp);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DESCRIBE account;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| acc_no | int(20)     | YES  |     | NULL    |       |
+| name   | varchar(20) | YES  |     | NULL    |       |
+| amount | int(20)     | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DESCRIBE account_logs;
++-----------+-------------+------+-----+-------------------+-----------------------------+
+| Field     | Type        | Null | Key | Default           | Extra                       |
++-----------+-------------+------+-----+-------------------+-----------------------------+
+| acc_no    | int(20)     | YES  |     | NULL              |                             |
+| name      | varchar(20) | YES  |     | NULL              |                             |
+| amount    | int(20)     | YES  |     | NULL              |                             |
+| tran_type | varchar(20) | YES  |     | NULL              |                             |
+| tran_time | timestamp   | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++-----------+-------------+------+-----+-------------------+-----------------------------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TRIGGER acc_log
+    -> AFTER UPDATE
+    -> ON account
+    -> FOR EACH ROW
+    -> BEGIN
+    -> DECLARE tran_type VARCHAR(20);
+    -> DECLARE amt INT(20);
+    -> IF OLD.amount > NEW.amount THEN
+    ->   SET tran_type = "Withdraw";
+    ->   SET amt = OLD.amount - NEW.amount;
+    -> ELSE
+    ->   SET tran_type = "Deposited";
+    ->   SET amt = NEW.amount - OLD.amount;
+    -> END IF;
+    -> INSERT INTO account_logs VALUE (OLD.acc_no, OLD.name, amt, tran_type, now());
+    -> END//
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> SELECT * FROM account//
++--------+-------------+--------+
+| acc_no | name        | amount |
++--------+-------------+--------+
+|      1 | Sophia      | 940050 |
+|      2 | Jacob       | 824327 |
+|      3 | Elizabeth   | 837502 |
+|      4 | Noah        | 878397 |
+|      5 | Christopher | 752528 |
++--------+-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE account SET amount = 1768 WHERE acc_no = 1//
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM account//
++--------+-------------+--------+
+| acc_no | name        | amount |
++--------+-------------+--------+
+|      1 | Sophia      | 938282 |
+|      2 | Jacob       | 824327 |
+|      3 | Elizabeth   | 837502 |
+|      4 | Noah        | 878397 |
+|      5 | Christopher | 752528 |
++--------+-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM account_logs//
++--------+--------+--------+-----------+---------------------+
+| acc_no | name   | amount | tran_type | tran_time           |
++--------+--------+--------+-----------+---------------------+
+|      1 | Sophia | 1768 | Withdraw  | 2021-04-24 16:51:02 |
++--------+--------+--------+-----------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> UPDATE account SET amount = 786450 WHERE acc_no = 2//
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM account//
++--------+-------------+--------+
+| acc_no | name        | amount |
++--------+-------------+--------+
+|      1 | Sophia      | 938282 |
+|      2 | Jacob       | 786450 |
+|      3 | Elizabeth   | 837502 |
+|      4 | Noah        | 878397 |
+|      5 | Christopher | 752528 |
++--------+-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM account_logs//
++--------+--------+--------+-----------+---------------------+
+| acc_no | name   | amount | tran_type | tran_time           |
++--------+--------+--------+-----------+---------------------+
+|      1 | Sophia |   1768 | Withdraw  | 2021-04-24 16:51:02 |
+|      2 | Jacob  |  37877 | Withdraw  | 2021-04-24 16:55:51 |
++--------+--------+--------+-----------+---------------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM account//
++--------+-------------+---------+
+| acc_no | name        | amount  |
++--------+-------------+---------+
+|      1 | Sophia      |  938282 |
+|      2 | Jacob       |  786450 |
+|      3 | Elizabeth   | 1076181 |
+|      4 | Noah        |  878397 |
+|      5 | Christopher |  752528 |
++--------+-------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM account_logs//
++--------+-----------+--------+-----------+---------------------+
+| acc_no | name      | amount | tran_type | tran_time           |
++--------+-----------+--------+-----------+---------------------+
+|      1 | Sophia    |   1768 | Withdraw  | 2021-04-24 16:51:02 |
+|      2 | Jacob     |  37877 | Withdraw  | 2021-04-24 16:55:51 |
+|      3 | Elizabeth | 238679 | Deposited | 2021-04-24 16:59:07 |
++--------+-----------+--------+-----------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> UPDATE account SET amount = 1098093 WHERE acc_no = 4//
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM account//
++--------+-------------+---------+
+| acc_no | name        | amount  |
++--------+-------------+---------+
+|      1 | Sophia      |  938282 |
+|      2 | Jacob       |  786450 |
+|      3 | Elizabeth   | 1076181 |
+|      4 | Noah        | 1098093 |
+|      5 | Christopher |  752528 |
++--------+-------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM account_logs//
++--------+-----------+--------+-----------+---------------------+
+| acc_no | name      | amount | tran_type | tran_time           |
++--------+-----------+--------+-----------+---------------------+
+|      1 | Sophia    |   1768 | Withdraw  | 2021-04-24 16:51:02 |
+|      2 | Jacob     |  37877 | Withdraw  | 2021-04-24 16:55:51 |
+|      3 | Elizabeth | 238679 | Deposited | 2021-04-24 16:59:07 |
+|      4 | Noah      | 219696 | Deposited | 2021-04-24 17:01:05 |
++--------+-----------+--------+-----------+---------------------+
+4 rows in set (0.00 sec)

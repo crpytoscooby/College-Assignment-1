@@ -1,0 +1,316 @@
+CREATE TABLE employee (
+emp_no int(10),
+emp_name varchar(20),
+job varchar(20),
+address varchar(20),
+hire_date date,
+sal int(10),
+comm int(10),
+deptno int(10));
+
+INSERT INTO employee VALUES
+(101, "Sheldon", "Marketing Specialist", "Ahmedabad", "2020-02-11", 12000, NULL, 30),
+(102, "Ross", "Marketing Manager", "Ahmedabad", "2011-01-28", 13000, 300, 10),
+(103, "Chandler", "Marketing Director", "Surat", "2014-08-21", 10000, 500, 50),
+(104, "Raj", "Graphic Designer", "Jaipur", "2011-01-11", 7000, NULL, 20),
+(105, "Howard", "SQL Developer", "Bangalore", "2019-04-26", 7000, 1400, 30 ),
+(106, "Joey", "Marketing Specialist", "Jaipur", "2014-05-17", 7000, NULL, 30),
+(107, "Rachel", "SEO Manager", "Lucknow", "2020-08-19", 5000, NULL, 40),
+(108, "Penny", "Marketing Director", "Pune", "2015-03-14", 13000, NULL, 30),
+(109, "Monica", "Marketing Manager", "Chennai", "2017-04-28", 9000, NULL, 10),
+(110, "Leonard", "SEO Manager", "Bangalore", "2018-05-24", 9000, 0, 40);
+
+// relational operator
+SELECT * FROM employee WHERE sal >= 10000; 
+SELECT * FROM employee WHERE sal < 10000;
+SELECT * FROM employee WHERE sal != 7000;
+SELECT * FROM employee WHERE sal = 7000;
+
+// logical or boolean operators
+SELECT * FROM employee WHERE job = 'Marketing Manager' OR job = 'Marketing Director';
+SELECT * FROM employee WHERE job = 'Marketing Specialist' AND sal > 10000;
+SELECT * FROM employee WHERE deptno != 30;
+SELECT * FROM employee WHERE deptno IN (20, 30);
+SELECT * FROM employee WHERE deptno NOT IN (20, 30);
+SELECT * FROM employee WHERE sal BETWEEN 7000 AND 10000;
+SELECT * FROM employee WHERE sal NOT BETWEEN 7000 AND 10000;
+
+// pattern matching
+SELECT * FROM employee WHERE emp_name LIKE 'R%';
+SELECT * FROM employee WHERE emp_name LIKE '%d';
+SELECT * FROM employee WHERE emp_name LIKE '____';
+SELECT * FROM employee WHERE emp_name LIKE '_o%';
+SELECT * FROM employee WHERE emp_name LIKE '%e_';
+
+// aggregate function 
+SELECT * FROM employee WHERE comm IS NULL;
+SELECT AVG(sal) FROM employee;
+------------------------------------------------------------------------------------------------------------------------------
+mysql> CREATE DATABASE assignment4;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> USE assignment4;
+Database changed
+
+mysql> CREATE TABLE employee (
+    -> emp_no int(10),
+    -> emp_name varchar(20),
+    -> job varchar(20),
+    -> address varchar(20),
+    -> hire_date date,
+    -> sal int(10),
+    -> comm int(10),
+    -> deptno int(10));
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> DESC employee;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| emp_no    | int(10)     | YES  |     | NULL    |       |
+| emp_name  | varchar(20) | YES  |     | NULL    |       |
+| job       | varchar(20) | YES  |     | NULL    |       |
+| address   | varchar(20) | YES  |     | NULL    |       |
+| hire_date | date        | YES  |     | NULL    |       |
+| sal       | int(10)     | YES  |     | NULL    |       |
+| comm      | int(10)     | YES  |     | NULL    |       |
+| deptno    | int(10)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> INSERT INTO employee VALUES
+    -> (101, "Sheldon", "Marketing Specialist", "Ahmedabad", "2020-02-11", 12000, NULL, 30),
+    -> (102, "Ross", "Marketing Manager", "Ahmedabad", "2011-01-28", 13000, 300, 10),
+    -> (103, "Chandler", "Marketing Director", "Surat", "2014-08-21", 10000, 500, 50),
+    -> (104, "Raj", "Graphic Designer", "Jaipur", "2011-01-11", 7000, NULL, 20),
+    -> (105, "Howard", "SQL Developer", "Bangalore", "2019-04-26", 7000, 1400, 30 ),
+    -> (106, "Joey", "Marketing Specialist", "Jaipur", "2014-05-17", 7000, NULL, 30),
+    -> (107, "Rachel", "SEO Manager", "Lucknow", "2020-08-19", 5000, NULL, 40),
+    -> (108, "Penny", "Marketing Director", "Pune", "2015-03-14", 13000, NULL, 30),
+    -> (109, "Monica", "Marketing Manager", "Chennai", "2017-04-28", 9000, NULL, 10),
+    -> (110, "Leonard", "SEO Manager", "Bangalore", "2018-05-24", 9000, 0, 40);
+Query OK, 10 rows affected (0.13 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM employee;
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                  | address   | hire_date  | sal   | comm | deptno |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+|    101 | Sheldon  | Marketing Specialist | Ahmedabad | 2020-02-11 | 12000 | NULL |     30 |
+|    102 | Ross     | Marketing Manager    | Ahmedabad | 2011-01-28 | 13000 |  300 |     10 |
+|    103 | Chandler | Marketing Director   | Surat     | 2014-08-21 | 10000 |  500 |     50 |
+|    104 | Raj      | Graphic Designer     | Jaipur    | 2011-01-11 |  7000 | NULL |     20 |
+|    105 | Howard   | SQL Developer        | Bangalore | 2019-04-26 |  7000 | 1400 |     30 |
+|    106 | Joey     | Marketing Specialist | Jaipur    | 2014-05-17 |  7000 | NULL |     30 |
+|    107 | Rachel   | SEO Manager          | Lucknow   | 2020-08-19 |  5000 | NULL |     40 |
+|    108 | Penny    | Marketing Director   | Pune      | 2015-03-14 | 13000 | NULL |     30 |
+|    109 | Monica   | Marketing Manager    | Chennai   | 2017-04-28 |  9000 | NULL |     10 |
+|    110 | Leonard  | SEO Manager          | Bangalore | 2018-05-24 |  9000 |    0 |     40 |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+10 rows in set (0.00 sec)
+
+
+// relational operator
+mysql> SELECT * FROM employee WHERE sal >= 10000;
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                  | address   | hire_date  | sal   | comm | deptno |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+|    101 | Sheldon  | Marketing Specialist | Ahmedabad | 2020-02-11 | 12000 | NULL |     30 |
+|    102 | Ross     | Marketing Manager    | Ahmedabad | 2011-01-28 | 13000 |  300 |     10 |
+|    103 | Chandler | Marketing Director   | Surat     | 2014-08-21 | 10000 |  500 |     50 |
+|    108 | Penny    | Marketing Director   | Pune      | 2015-03-14 | 13000 | NULL |     30 |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM employee WHERE sal < 10000;
++--------+----------+----------------------+-----------+------------+------+------+--------+
+| emp_no | emp_name | job                  | address   | hire_date  | sal  | comm | deptno |
++--------+----------+----------------------+-----------+------------+------+------+--------+
+|    104 | Raj      | Graphic Designer     | Jaipur    | 2011-01-11 | 7000 | NULL |     20 |
+|    105 | Howard   | SQL Developer        | Bangalore | 2019-04-26 | 7000 | 1400 |     30 |
+|    106 | Joey     | Marketing Specialist | Jaipur    | 2014-05-17 | 7000 | NULL |     30 |
+|    107 | Rachel   | SEO Manager          | Lucknow   | 2020-08-19 | 5000 | NULL |     40 |
+|    109 | Monica   | Marketing Manager    | Chennai   | 2017-04-28 | 9000 | NULL |     10 |
+|    110 | Leonard  | SEO Manager          | Bangalore | 2018-05-24 | 9000 |    0 |     40 |
++--------+----------+----------------------+-----------+------------+------+------+--------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM employee WHERE sal != 7000;
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                  | address   | hire_date  | sal   | comm | deptno |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+|    101 | Sheldon  | Marketing Specialist | Ahmedabad | 2020-02-11 | 12000 | NULL |     30 |
+|    102 | Ross     | Marketing Manager    | Ahmedabad | 2011-01-28 | 13000 |  300 |     10 |
+|    103 | Chandler | Marketing Director   | Surat     | 2014-08-21 | 10000 |  500 |     50 |
+|    107 | Rachel   | SEO Manager          | Lucknow   | 2020-08-19 |  5000 | NULL |     40 |
+|    108 | Penny    | Marketing Director   | Pune      | 2015-03-14 | 13000 | NULL |     30 |
+|    109 | Monica   | Marketing Manager    | Chennai   | 2017-04-28 |  9000 | NULL |     10 |
+|    110 | Leonard  | SEO Manager          | Bangalore | 2018-05-24 |  9000 |    0 |     40 |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT * FROM employee WHERE sal = 7000;
++--------+----------+----------------------+-----------+------------+------+------+--------+
+| emp_no | emp_name | job                  | address   | hire_date  | sal  | comm | deptno |
++--------+----------+----------------------+-----------+------------+------+------+--------+
+|    104 | Raj      | Graphic Designer     | Jaipur    | 2011-01-11 | 7000 | NULL |     20 |
+|    105 | Howard   | SQL Developer        | Bangalore | 2019-04-26 | 7000 | 1400 |     30 |
+|    106 | Joey     | Marketing Specialist | Jaipur    | 2014-05-17 | 7000 | NULL |     30 |
++--------+----------+----------------------+-----------+------------+------+------+--------+
+3 rows in set (0.10 sec)
+
+// logical or boolean operators
+mysql> SELECT * FROM employee WHERE job = 'Marketing Manager' OR job = 'Marketing Director';
++--------+----------+--------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                | address   | hire_date  | sal   | comm | deptno |
++--------+----------+--------------------+-----------+------------+-------+------+--------+
+|    102 | Ross     | Marketing Manager  | Ahmedabad | 2011-01-28 | 13000 |  300 |     10 |
+|    103 | Chandler | Marketing Director | Surat     | 2014-08-21 | 10000 |  500 |     50 |
+|    108 | Penny    | Marketing Director | Pune      | 2015-03-14 | 13000 | NULL |     30 |
+|    109 | Monica   | Marketing Manager  | Chennai   | 2017-04-28 |  9000 | NULL |     10 |
++--------+----------+--------------------+-----------+------------+-------+------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM employee WHERE job = 'Marketing Specialist' AND sal > 10000;
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                  | address   | hire_date  | sal   | comm | deptno |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+|    101 | Sheldon  | Marketing Specialist | Ahmedabad | 2020-02-11 | 12000 | NULL |     30 |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM employee WHERE deptno != 30;
++--------+----------+--------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                | address   | hire_date  | sal   | comm | deptno |
++--------+----------+--------------------+-----------+------------+-------+------+--------+
+|    102 | Ross     | Marketing Manager  | Ahmedabad | 2011-01-28 | 13000 |  300 |     10 |
+|    103 | Chandler | Marketing Director | Surat     | 2014-08-21 | 10000 |  500 |     50 |
+|    104 | Raj      | Graphic Designer   | Jaipur    | 2011-01-11 |  7000 | NULL |     20 |
+|    107 | Rachel   | SEO Manager        | Lucknow   | 2020-08-19 |  5000 | NULL |     40 |
+|    109 | Monica   | Marketing Manager  | Chennai   | 2017-04-28 |  9000 | NULL |     10 |
+|    110 | Leonard  | SEO Manager        | Bangalore | 2018-05-24 |  9000 |    0 |     40 |
++--------+----------+--------------------+-----------+------------+-------+------+--------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM employee WHERE deptno IN (20, 30);
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                  | address   | hire_date  | sal   | comm | deptno |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+|    101 | Sheldon  | Marketing Specialist | Ahmedabad | 2020-02-11 | 12000 | NULL |     30 |
+|    104 | Raj      | Graphic Designer     | Jaipur    | 2011-01-11 |  7000 | NULL |     20 |
+|    105 | Howard   | SQL Developer        | Bangalore | 2019-04-26 |  7000 | 1400 |     30 |
+|    106 | Joey     | Marketing Specialist | Jaipur    | 2014-05-17 |  7000 | NULL |     30 |
+|    108 | Penny    | Marketing Director   | Pune      | 2015-03-14 | 13000 | NULL |     30 |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT * FROM employee WHERE deptno NOT IN (20, 30);
++--------+----------+--------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                | address   | hire_date  | sal   | comm | deptno |
++--------+----------+--------------------+-----------+------------+-------+------+--------+
+|    102 | Ross     | Marketing Manager  | Ahmedabad | 2011-01-28 | 13000 |  300 |     10 |
+|    103 | Chandler | Marketing Director | Surat     | 2014-08-21 | 10000 |  500 |     50 |
+|    107 | Rachel   | SEO Manager        | Lucknow   | 2020-08-19 |  5000 | NULL |     40 |
+|    109 | Monica   | Marketing Manager  | Chennai   | 2017-04-28 |  9000 | NULL |     10 |
+|    110 | Leonard  | SEO Manager        | Bangalore | 2018-05-24 |  9000 |    0 |     40 |
++--------+----------+--------------------+-----------+------------+-------+------+--------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM employee WHERE sal BETWEEN 7000 AND 10000;
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                  | address   | hire_date  | sal   | comm | deptno |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+|    103 | Chandler | Marketing Director   | Surat     | 2014-08-21 | 10000 |  500 |     50 |
+|    104 | Raj      | Graphic Designer     | Jaipur    | 2011-01-11 |  7000 | NULL |     20 |
+|    105 | Howard   | SQL Developer        | Bangalore | 2019-04-26 |  7000 | 1400 |     30 |
+|    106 | Joey     | Marketing Specialist | Jaipur    | 2014-05-17 |  7000 | NULL |     30 |
+|    109 | Monica   | Marketing Manager    | Chennai   | 2017-04-28 |  9000 | NULL |     10 |
+|    110 | Leonard  | SEO Manager          | Bangalore | 2018-05-24 |  9000 |    0 |     40 |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM employee WHERE sal NOT BETWEEN 7000 AND 10000;
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                  | address   | hire_date  | sal   | comm | deptno |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+|    101 | Sheldon  | Marketing Specialist | Ahmedabad | 2020-02-11 | 12000 | NULL |     30 |
+|    102 | Ross     | Marketing Manager    | Ahmedabad | 2011-01-28 | 13000 |  300 |     10 |
+|    107 | Rachel   | SEO Manager          | Lucknow   | 2020-08-19 |  5000 | NULL |     40 |
+|    108 | Penny    | Marketing Director   | Pune      | 2015-03-14 | 13000 | NULL |     30 |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+4 rows in set (0.00 sec)
+
+
+// pattern matching
+mysql> SELECT * FROM employee WHERE emp_name LIKE 'R%';
++--------+----------+-------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job               | address   | hire_date  | sal   | comm | deptno |
++--------+----------+-------------------+-----------+------------+-------+------+--------+
+|    102 | Ross     | Marketing Manager | Ahmedabad | 2011-01-28 | 13000 |  300 |     10 |
+|    104 | Raj      | Graphic Designer  | Jaipur    | 2011-01-11 |  7000 | NULL |     20 |
+|    107 | Rachel   | SEO Manager       | Lucknow   | 2020-08-19 |  5000 | NULL |     40 |
++--------+----------+-------------------+-----------+------------+-------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM employee WHERE emp_name LIKE '%d';
++--------+----------+---------------+-----------+------------+------+------+--------+
+| emp_no | emp_name | job           | address   | hire_date  | sal  | comm | deptno |
++--------+----------+---------------+-----------+------------+------+------+--------+
+|    105 | Howard   | SQL Developer | Bangalore | 2019-04-26 | 7000 | 1400 |     30 |
+|    110 | Leonard  | SEO Manager   | Bangalore | 2018-05-24 | 9000 |    0 |     40 |
++--------+----------+---------------+-----------+------------+------+------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM employee WHERE emp_name LIKE '____';
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                  | address   | hire_date  | sal   | comm | deptno |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+|    102 | Ross     | Marketing Manager    | Ahmedabad | 2011-01-28 | 13000 |  300 |     10 |
+|    106 | Joey     | Marketing Specialist | Jaipur    | 2014-05-17 |  7000 | NULL |     30 |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM employee WHERE emp_name LIKE '_o%';
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                  | address   | hire_date  | sal   | comm | deptno |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+|    102 | Ross     | Marketing Manager    | Ahmedabad | 2011-01-28 | 13000 |  300 |     10 |
+|    105 | Howard   | SQL Developer        | Bangalore | 2019-04-26 |  7000 | 1400 |     30 |
+|    106 | Joey     | Marketing Specialist | Jaipur    | 2014-05-17 |  7000 | NULL |     30 |
+|    109 | Monica   | Marketing Manager    | Chennai   | 2017-04-28 |  9000 | NULL |     10 |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM employee WHERE emp_name LIKE '%e_';
++--------+----------+----------------------+---------+------------+-------+------+--------+
+| emp_no | emp_name | job                  | address | hire_date  | sal   | comm | deptno |
++--------+----------+----------------------+---------+------------+-------+------+--------+
+|    103 | Chandler | Marketing Director   | Surat   | 2014-08-21 | 10000 |  500 |     50 |
+|    106 | Joey     | Marketing Specialist | Jaipur  | 2014-05-17 |  7000 | NULL |     30 |
+|    107 | Rachel   | SEO Manager          | Lucknow | 2020-08-19 |  5000 | NULL |     40 |
++--------+----------+----------------------+---------+------------+-------+------+--------+
+3 rows in set (0.00 sec)
+
+
+// aggregate function
+mysql> SELECT * FROM employee WHERE comm IS NULL;
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+| emp_no | emp_name | job                  | address   | hire_date  | sal   | comm | deptno |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+|    101 | Sheldon  | Marketing Specialist | Ahmedabad | 2020-02-11 | 12000 | NULL |     30 |
+|    104 | Raj      | Graphic Designer     | Jaipur    | 2011-01-11 |  7000 | NULL |     20 |
+|    106 | Joey     | Marketing Specialist | Jaipur    | 2014-05-17 |  7000 | NULL |     30 |
+|    107 | Rachel   | SEO Manager          | Lucknow   | 2020-08-19 |  5000 | NULL |     40 |
+|    108 | Penny    | Marketing Director   | Pune      | 2015-03-14 | 13000 | NULL |     30 |
+|    109 | Monica   | Marketing Manager    | Chennai   | 2017-04-28 |  9000 | NULL |     10 |
++--------+----------+----------------------+-----------+------------+-------+------+--------+
+6 rows in set (0.06 sec)
+
+mysql> SELECT AVG(sal) FROM employee;
++-----------+
+| AVG(sal)  |
++-----------+
+| 9200.0000 |
++-----------+
+1 row in set (0.00 sec)
+

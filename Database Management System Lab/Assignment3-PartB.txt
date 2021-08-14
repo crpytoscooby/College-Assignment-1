@@ -1,0 +1,201 @@
+mysql> CREATE DATABASE ASSIGNMENT3B;
+Query OK, 1 row affected (0.56 sec)
+
+mysql> USE ASSIGNMENT3B
+Database changed
+
+mysql> CREATE TABLE student (
+    -> rollno int(10) PRIMARY KEY,
+    -> stud_name varchar(20),
+    -> city varchar(20));
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> DESC student;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| rollno    | int(10)     | NO   | PRI | NULL    |       |
+| stud_name | varchar(20) | YES  |     | NULL    |       |
+| city      | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> ALTER TABLE student ADD marks int(3);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC student;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| rollno    | int(10)     | NO   | PRI | NULL    |       |
+| stud_name | varchar(20) | YES  |     | NULL    |       |
+| city      | varchar(20) | YES  |     | NULL    |       |
+| marks     | int(3)      | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> ALTER TABLE student MODIFY rollno varchar(10);
+Query OK, 0 rows affected (0.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC student;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| rollno    | varchar(10) | NO   | PRI | NULL    |       |
+| stud_name | varchar(20) | YES  |     | NULL    |       |
+| city      | varchar(20) | YES  |     | NULL    |       |
+| marks     | int(3)      | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> ALTER TABLE student DROP marks;
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC student;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| rollno    | varchar(10) | NO   | PRI | NULL    |       |
+| stud_name | varchar(20) | YES  |     | NULL    |       |
+| city      | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE student MODIFY rollno int(20);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC student;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| rollno    | int(20)     | NO   | PRI | NULL    |       |
+| stud_name | varchar(20) | YES  |     | NULL    |       |
+| city      | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.14 sec)
+
+mysql> ALTER TABLE student MODIFY city varchar(20) DEFAULT "Pune";
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC student;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| rollno    | int(20)     | NO   | PRI | NULL    |       |
+| stud_name | varchar(20) | YES  |     | NULL    |       |
+| city      | varchar(20) | YES  |     | Pune    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE course (
+    -> course_id int(10),
+    -> course_name varchar(20),
+    -> rollno int(20),
+    -> PRIMARY KEY (course_id),
+    -> FOREIGN KEY (rollno) REFERENCES student(rollno));
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> DESC course;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| course_id   | int(10)     | NO   | PRI | NULL    |       |
+| course_name | varchar(20) | YES  |     | NULL    |       |
+| rollno      | int(20)     | YES  | MUL | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO student VALUES
+    -> (1, "Sheldon", "Ahmedabad"),
+    -> (2, "Ross", "Ahmedabad"),
+    -> (3, "Chandler", "Surat"),
+    -> (4, "Raj", "Jaipur"),
+    -> (5, "Howard", "Bangalore"),
+    -> (6, "Amy", "Jaipur"),
+    -> (7, "Phoebe", "Lucknow"),
+    -> (8, "Penny", DEFAULT),
+    -> (9, "Monica", "Chennai"),
+    -> (10, "Leonard", "Bangalore"),
+    -> (11, "Rachel", "Surat"),
+    -> (12, "Joey", DEFAULT),
+    -> (13, "Bernadette", "Hyderabad"),
+    -> (14, "Leslie", "Kolkata");
+Query OK, 14 rows affected (0.04 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM student;
++--------+------------+-----------+
+| rollno | stud_name  | city      |
++--------+------------+-----------+
+|      1 | Sheldon    | Ahmedabad |
+|      2 | Ross       | Ahmedabad |
+|      3 | Chandler   | Surat     |
+|      4 | Raj        | Jaipur    |
+|      5 | Howard     | Bangalore |
+|      6 | Amy        | Jaipur    |
+|      7 | Phoebe     | Lucknow   |
+|      8 | Penny      | Pune      |
+|      9 | Monica     | Chennai   |
+|     10 | Leonard    | Bangalore |
+|     11 | Rachel     | Surat     |
+|     12 | Joey       | Pune      |
+|     13 | Bernadette | Hyderabad |
+|     14 | Leslie     | Kolkata   |
++--------+------------+-----------+
+14 rows in set (0.00 sec)
+
+mysql> INSERT INTO course VALUES
+    -> (1, "Java", 14),
+    -> (2, "Python", 4),
+    -> (3, "C++", 9),
+    -> (4, "PHP", 11),
+    -> (5, "HTML", 2),
+    -> (6, "Java", 3),
+    -> (7, "Javascript", 1),
+    -> (8, "Java", 5),
+    -> (9, "C++", 10),
+    -> (10, "Python", 8),
+    -> (11, "Python", 6),
+    -> (12, "HTML", 12),
+    -> (13, "C++", 7),
+    -> (14, "Java", 13);
+Query OK, 14 rows affected (0.12 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM course;
++-----------+-------------+--------+
+| course_id | course_name | rollno |
++-----------+-------------+--------+
+|         1 | Java        |     14 |
+|         2 | Python      |      4 |
+|         3 | C++         |      9 |
+|         4 | PHP         |     11 |
+|         5 | HTML        |      2 |
+|         6 | Java        |      3 |
+|         7 | Javascript  |      1 |
+|         8 | Java        |      5 |
+|         9 | C++         |     10 |
+|        10 | Python      |      8 |
+|        11 | Python      |      6 |
+|        12 | HTML        |     12 |
+|        13 | C++         |      7 |
+|        14 | Java        |     13 |
++-----------+-------------+--------+
+14 rows in set (0.00 sec)
+
+mysql> DROP TABLE course;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DROP TABLE student;
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> SHOW TABLES;
+Empty set (0.00 sec)
+
+mysql> EXIT
+Bye

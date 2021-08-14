@@ -1,0 +1,126 @@
+mysql> CREATE DATABASE PVGCOET;
+Query OK, 1 row affected (0.12 sec)
+
+mysql> USE PVGCOET;
+Database changed
+mysql> CREATE TABLE student (
+    -> sno INT(10),
+    -> name VARCHAR(10),
+    -> sub1 INT(3),
+    -> sub2 INT(3),
+    -> sub3 INT(3));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> CREATE TABLE student_add (
+    -> sno INT(10),
+    -> name VARCHAR(10),
+    -> address VARCHAR(10));
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> DESCRIBE student;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| sno   | int(10)     | YES  |     | NULL    |       |
+| name  | varchar(10) | YES  |     | NULL    |       |
+| sub1  | int(3)      | YES  |     | NULL    |       |
+| sub2  | int(3)      | YES  |     | NULL    |       |
+| sub3  | int(3)      | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> DESCRIBE student_add;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| sno     | int(10)     | YES  |     | NULL    |       |
+| name    | varchar(10) | YES  |     | NULL    |       |
+| address | varchar(10) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO student VALUE
+    -> (1, "AMIT", 55, 66, 77),
+    -> (2, "AJIT", 66, 44, 77),
+    -> (3, "VIRAT", 50, 60, 70),
+    -> (4, "JIT", 56, 74, 70),
+    -> (5, "RAHUL", 52, 62, 57),
+    -> (6, "KAPIL", 65, 45, 75),
+    -> (7, "ROHIT", 52, 60, 50),
+    -> (8, "SUSHIL", 67, 46, 75),
+    -> (9, "SACHIN", 50, 50, 50),
+    -> (10, "SUNIL", 60, 40, 70);
+Query OK, 10 rows affected (0.13 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO student_add VALUE
+    -> (1, "AMIT", "CHENNAI"),
+    -> (2, "AJIT", "PUNE"),
+    -> (3, "VIRAT", "MUMBAI"),
+    -> (4, "JIT", "HYDERABAD"),
+    -> (5, "RAHUL", "CHENNAI"),
+    -> (6, "KAPIL", "HYDERABAD"),
+    -> (7, "ROHIT", "MUMBAI"),
+    -> (8, "SUSHIL", "BENGALURU"),
+    -> (9, "SACHIN", "MUMBAI"),
+    -> (10, "SUNIL", "PUNE");
+Query OK, 10 rows affected (0.04 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM student;
++------+--------+------+------+------+
+| sno  | name   | sub1 | sub2 | sub3 |
++------+--------+------+------+------+
+|    1 | AMIT   |   55 |   66 |   77 |
+|    2 | AJIT   |   66 |   44 |   77 |
+|    3 | VIRAT  |   50 |   60 |   70 |
+|    4 | JIT    |   56 |   74 |   70 |
+|    5 | RAHUL  |   52 |   62 |   57 |
+|    6 | KAPIL  |   65 |   45 |   75 |
+|    7 | ROHIT  |   52 |   60 |   50 |
+|    8 | SUSHIL |   67 |   46 |   75 |
+|    9 | SACHIN |   50 |   50 |   50 |
+|   10 | SUNIL  |   60 |   40 |   70 |
++------+--------+------+------+------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM student_add;
++------+--------+-----------+
+| sno  | name   | address   |
++------+--------+-----------+
+|    1 | AMIT   | CHENNAI   |
+|    2 | AJIT   | PUNE      |
+|    3 | VIRAT  | MUMBAI    |
+|    4 | JIT    | HYDERABAD |
+|    5 | RAHUL  | CHENNAI   |
+|    6 | KAPIL  | HYDERABAD |
+|    7 | ROHIT  | MUMBAI    |
+|    8 | SUSHIL | BENGALURU |
+|    9 | SACHIN | MUMBAI    |
+|   10 | SUNIL  | PUNE      |
++------+--------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> CREATE VIEW studentView AS
+    -> SELECT student.sno, student.name, student.sub1, student.sub2, student.sub3, student_add.address
+    -> FROM student, student_add
+    -> WHERE student.sno = student_add.sno;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from studentView;
++------+--------+------+------+------+-----------+
+| sno  | name   | sub1 | sub2 | sub3 | address   |
++------+--------+------+------+------+-----------+
+|    1 | AMIT   |   55 |   66 |   77 | CHENNAI   |
+|    2 | AJIT   |   66 |   44 |   77 | PUNE      |
+|    3 | VIRAT  |   50 |   60 |   70 | MUMBAI    |
+|    4 | JIT    |   56 |   74 |   70 | HYDERABAD |
+|    5 | RAHUL  |   52 |   62 |   57 | CHENNAI   |
+|    6 | KAPIL  |   65 |   45 |   75 | HYDERABAD |
+|    7 | ROHIT  |   52 |   60 |   50 | MUMBAI    |
+|    8 | SUSHIL |   67 |   46 |   75 | BENGALURU |
+|    9 | SACHIN |   50 |   50 |   50 | MUMBAI    |
+|   10 | SUNIL  |   60 |   40 |   70 | PUNE      |
++------+--------+------+------+------+-----------+
+10 rows in set (0.00 sec)
+

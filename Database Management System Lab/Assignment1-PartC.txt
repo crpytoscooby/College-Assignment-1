@@ -1,0 +1,201 @@
+mysql> CREATE DATABASE PVGCOET;
+Query OK, 1 row affected (0.12 sec)
+
+mysql> USE PVGCOET;
+Database changed
+mysql> CREATE TABLE student (
+    -> sno INT(10),
+    -> name VARCHAR(20),
+    -> sub1 INT(3),
+    -> sub2 INT(3),
+    -> sub3 INT(3),
+    -> total INT(3),
+    -> percentage FLOAT(5, 2),
+    -> grade VARCHAR(20));
+Query OK, 0 rows affected (1.85 sec)
+
+mysql> INSERT INTO student VALUE
+    -> (1, "AMIT", 55, 66, 77, NULL, NULL, NULL),
+    -> (2, "AJIT", 66, 44, 77, NULL, NULL, NULL),
+    -> (3, "VIRAT", 50, 60, 70, NULL, NULL, NULL),
+    -> (4, "JIT", 56, 74, 70, NULL, NULL, NULL),
+    -> (5, "RAHUL", 52, 62, 57, NULL, NULL, NULL),
+    -> (6, "KAPIL", 65, 45, 75, NULL, NULL, NULL),
+    -> (7, "ROHIT", 52, 60, 50, NULL, NULL, NULL),
+    -> (8, "SUSHIL", 67, 46, 75, NULL, NULL, NULL),
+    -> (9, "SACHIN", 50, 50, 50, NULL, NULL, NULL),
+    -> (10, "SUNIL", 60, 40, 70, NULL, NULL, NULL);
+Query OK, 10 rows affected (0.14 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> DELIMITER //
+
+mysql> CREATE PROCEDURE calper()
+    -> BEGIN
+    -> DECLARE id, s1, s2, s3, total INT(3);
+    -> DECLARE percentage FLOAT(5,2);
+    -> DECLARE i, counter INT(10);
+    -> DECLARE grade VARCHAR(20);
+    -> SET i = 0;
+    -> SELECT COUNT(*) INTO counter FROM student;
+    -> WHILE i < counter DO
+    ->   SELECT sno, sub1, sub2, sub3 INTO id, s1, s2, s3 FROM student LIMIT i, 1;
+    ->   SET total = (s1 + s2 + s3);
+    ->   SET percentage = (total/3);
+    ->   IF percentage > 40 THEN
+    ->     SET grade = 'PASS';
+    ->   ELSE
+    ->     SET grade = 'FAIL';
+    ->   END IF;
+    ->   UPDATE student SET total = total, percentage = percentage, grade = grade WHERE sno = id;
+    ->   SET i = i + 1;
+    -> END WHILE;
+    -> END//
+Query OK, 0 rows affected (1.62 sec)
+
+mysql> SELECT * FROM student//
++------+--------+------+------+------+-------+------------+-------+
+| sno  | name   | sub1 | sub2 | sub3 | total | percentage | grade |
++------+--------+------+------+------+-------+------------+-------+
+|    1 | AMIT   |   55 |   66 |   77 |  NULL |       NULL | NULL  |
+|    2 | AJIT   |   66 |   44 |   77 |  NULL |       NULL | NULL  |
+|    3 | VIRAT  |   50 |   60 |   70 |  NULL |       NULL | NULL  |
+|    4 | JIT    |   56 |   74 |   70 |  NULL |       NULL | NULL  |
+|    5 | RAHUL  |   52 |   62 |   57 |  NULL |       NULL | NULL  |
+|    6 | KAPIL  |   65 |   45 |   75 |  NULL |       NULL | NULL  |
+|    7 | ROHIT  |   52 |   60 |   50 |  NULL |       NULL | NULL  |
+|    8 | SUSHIL |   67 |   46 |   75 |  NULL |       NULL | NULL  |
+|    9 | SACHIN |   50 |   50 |   50 |  NULL |       NULL | NULL  |
+|   10 | SUNIL  |   60 |   40 |   70 |  NULL |       NULL | NULL  |
++------+--------+------+------+------+-------+------------+-------+
+10 rows in set (0.00 sec)
+
+mysql> CALL calper()//
+Query OK, 1 row affected (0.15 sec)
+
+mysql> SELECT * FROM student//
++------+--------+------+------+------+-------+------------+-------+
+| sno  | name   | sub1 | sub2 | sub3 | total | percentage | grade |
++------+--------+------+------+------+-------+------------+-------+
+|    1 | AMIT   |   55 |   66 |   77 |   198 |      66.00 | PASS  |
+|    2 | AJIT   |   66 |   44 |   77 |   187 |      62.33 | PASS  |
+|    3 | VIRAT  |   50 |   60 |   70 |   180 |      60.00 | PASS  |
+|    4 | JIT    |   56 |   74 |   70 |   200 |      66.67 | PASS  |
+|    5 | RAHUL  |   52 |   62 |   57 |   171 |      57.00 | PASS  |
+|    6 | KAPIL  |   65 |   45 |   75 |   185 |      61.67 | PASS  |
+|    7 | ROHIT  |   52 |   60 |   50 |   162 |      54.00 | PASS  |
+|    8 | SUSHIL |   67 |   46 |   75 |   188 |      62.67 | PASS  |
+|    9 | SACHIN |   50 |   50 |   50 |   150 |      50.00 | PASS  |
+|   10 | SUNIL  |   60 |   40 |   70 |   170 |      56.67 | PASS  |
++------+--------+------+------+------+-------+------------+-------+
+10 rows in set (0.00 sec)
+
+// PART 2
+
+mysql> CREATE FUNCTION gross(basic INT(10))
+    -> RETURNS FLOAT
+    -> BEGIN 
+    -> DECLARE gross, hra, da, ta FLOAT(10);
+    -> SET hra = (0.5 * basic);
+    -> SET da = basic;
+    -> SET ta = 0.2 * (basic + hra);
+    -> SET gross = basic + hra + da + ta;
+    -> RETURN gross;
+    -> END//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT gross(5000)//
++-------------+
+| gross(5000) |
++-------------+
+|       14000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT gross(99999)//
++--------------+
+| gross(99999) |
++--------------+
+|  279997.1875 |
++--------------+
+1 row in set (0.00 sec)
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+<---12 - APRIL - 2021--->
+
+// creating a table
+CREATE TABLE student (
+sno int(10),
+name varchar(10),
+sub1 int(3),
+sub2 int(3), 
+sub3 int(3),
+total int(3),
+percentage float(5, 2),
+grade varchar(20));
+
+// storing the contents
+INSERT INTO student VALUE
+(1, "AMIT", 55, 66, 77, NULL, NULL),
+(2, "AJIT", 66, 44, 77, NULL, NULL),
+(3, "VIRAT", 50, 60, 70, NULL, NULL),
+(4, "JIT", 56, 74, 70, NULL, NULL),	
+(5, "RAHUL", 52, 62, 57, NULL, NULL),
+(6, "KAPIL", 65, 45, 75, NULL, NULL),
+(7, "ROHIT", 52, 60, 50, NULL, NULL),
+(8, "SUSHIL", 67, 46, 75, NULL, NULL),
+(9, "SACHIN", 50, 50, 50, NULL, NULL),
+(10, "SUNIL", 60, 40, 70, NULL, NULL);
+
+// create procedure
+CREATE PROCEDURE calculatePercentage(IN id INT(10))
+BEGIN
+DECLARE s1, s2, s3, total INT(3);
+DECLARE percentage FLOAT(5, 2);
+SELECT sub1, sub2, sub3 INTO s1, s2, s3 FROM student WHERE srn = id;
+SET total = (s1 + s2 + s3);
+SET percentage = (total / 3);
+SELECT total, percentage;
+END//
+
+
+CREATE PROCEDURE calper2()
+BEGIN
+DECLARE id, s1, s2, s3, total, i, counter INT(3);
+DECLARE percentage FLOAT(5, 2);
+SET i = 0;
+SELECT COUNT(*) INTO counter FROM student;
+WHILE i < counter DO
+SELECT sno, sub1, sub2, sub3 INTO id, s1, s2, s3 FROM student LIMIT i, 1;
+SET total = (s1 + s2 + s3);
+SET percentage = (total / 3);	
+UPDATE student SET total = total, percentage = percentage WHERE sno = id;
+SET i = i + 1;
+END WHILE;
+END//
+Query OK, 0 rows affected (0.22 sec)
+
+
+<---15 - APRIL - 2021--->
+
+CREATE PROCEDURE calper()
+BEGIN
+DECLARE id, s1, s2, s3, total INT(3);
+DECLARE percentage FLOAT(5,2);
+DECLARE i, counter INT(10);
+DECLARE grade VARCHAR(20);
+SET i = 0;
+SELECT COUNT(*) INTO counter FROM student;
+WHILE i < counter DO
+  SELECT sno, sub1, sub2, sub3 INTO id, s1, s2, s3 FROM student LIMIT i, 1;
+  SET total = (s1 + s2 + s3);
+  SET percentage = (total / 3);
+  IF percentage > 40 THEN
+    SET grade = 'PASS';
+  ELSE
+    SET grade = 'FAIL';
+  END IF;
+  UPDATE student SET total = total, percentage = percentage, grade = grade WHERE sno = id;
+  SET i = i + 1;
+END WHILE;
+END//
