@@ -1,0 +1,792 @@
+Create employee collection in company database and insert at least 10 employee information in employee collection containing emp_id, emp_name, designation, hire_date, salary, hobbies and department. And Execute following queries on employee collection.
+
+> use Company
+switched to db Company
+
+> db.createCollection("employee");
+{ "ok" : 1 }
+
+> db.employee.insert([
+...{
+...         emp_id: 1,
+...         emp_name: "Ajit",
+...         designation: "Analysts",
+...         hire_date: new Date("2015-10-09"),
+...         salary: 30000,
+...         hobbies: ["Volunteering", "Community Involvement"],
+...         department: "HR"
+...},
+... {
+...         emp_id: 2,
+...         emp_name: "Amit",
+...         designation: "Analysts",
+...         hire_date: new Date("2016-04-21"),
+...         salary: 12000,
+...         hobbies: ["Writing", "Reading", "Paiting"],
+...         department: "Marketing"
+...},
+...{
+...         emp_id: 3,
+...         emp_name: "James",
+...         designation: "Manager",
+...         hire_date: new Date("2015-12-14"),
+...         salary: 20000,
+...         hobbies: ["Learning languages", "Blogging", "Travel"],
+...         department: "HR"
+...},
+...{
+...         emp_id: 4,
+...         emp_name: "Jit",
+...         designation: "Manager",
+...         hire_date: new Date("2017-06-18"),
+...         salary: 16000,
+...         hobbies: ["Volunteering", "Coding", "Painting"],
+...         department: "Production"
+...},
+...{
+...         emp_id: 5,
+...         emp_name: "Rahul",
+...         designation: "Analysts",
+...         hire_date: new Date("2015-11-10"),
+...         salary: 15000,
+...         hobbies: ["Dance", "Blogging", "Reading"],
+...         department: "Production"
+...},
+...{
+...         emp_id: 6,
+...         emp_name: "Thomas",
+...         designation: "Salesmen",
+...         hire_date: new Date("2018-05-27"),
+...         salary: 10000,
+...         hobbies: ["Learning languages", "Blogging", "Travel"],
+...         department: "Sales"
+...},
+...{
+...         emp_id: 7,
+...         emp_name: "Rohit",
+...         designation: "Manager",
+...         hire_date: new Date("2020-10-28"),
+...         salary: 7500,
+...         hobbies: ["Painting", "Reading", "Listening to music"],
+...         department: "Production"
+...},
+...{
+...         emp_id: 8,
+...         emp_name: "Sushil",
+...         designation: "Salesmen",
+...         hire_date: new Date("2018-12-12"),
+...         salary: 9000,
+...         hobbies: ["Podcasting", "Blogging"],
+...         department: "Sales"
+...},
+...{
+...         emp_id: 9,
+...         emp_name: "Sachin",
+...         designation: "Manager",
+...         hire_date: new Date("2015-05-05"),
+...         salary: 40000,
+...         hobbies: ["Vlogging", "Travel"],
+...         department: "Production"
+...},
+...{
+...         emp_id: 10,
+...         emp_name: "Sunil",
+...         designation: "Manager",
+...         hire_date: new Date("2019-07-14"),
+...         salary: 6000,
+...         hobbies: ["Coding"],
+...         department: "HR"
+...}
+...]);
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 10,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+
+a) List the names of analysts and salesmen.
+> db.employee.find({$or: [{designation: 'Analysts'}, {designation: 'Salesmen'}]}).pretty();
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810919"),
+        "emp_id" : 1,
+        "emp_name" : "Ajit",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2015-10-09T00:00:00Z"),
+        "salary" : 30000,
+        "hobbies" : [
+                "Volunteering",
+                "Community Involvement"
+        ],
+        "department" : "HR"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091a"),
+        "emp_id" : 2,
+        "emp_name" : "Amit",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2016-04-21T00:00:00Z"),
+        "salary" : 12000,
+        "hobbies" : [
+                "Writing",
+                "Reading",
+                "Paiting"
+        ],
+        "department" : "Marketing"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091d"),
+        "emp_id" : 5,
+        "emp_name" : "Rahul",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2015-11-10T00:00:00Z"),
+        "salary" : 15000,
+        "hobbies" : [
+                "Dance",
+                "Blogging",
+                "Reading"
+        ],
+        "department" : "Production"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091e"),
+        "emp_id" : 6,
+        "emp_name" : "Thomas",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-05-27T00:00:00Z"),
+        "salary" : 10000,
+        "hobbies" : [
+                "Learning languages",
+                "Blogging",
+                "Travel"
+        ],
+        "department" : "Sales"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810920"),
+        "emp_id" : 8,
+        "emp_name" : "Sushil",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-12-12T00:00:00Z"),
+        "salary" : 9000,
+        "hobbies" : [
+                "Podcasting",
+                "Blogging"
+        ],
+        "department" : "Sales"
+}
+
+b) List the emp_id,emp_name and salary from employee collection.
+> db.employee.find({}, {_id: 0, emp_id: 1, emp_name: 1, salary: 1});
+{ "emp_id" : 1, "emp_name" : "Ajit", "salary" : 30000 }
+{ "emp_id" : 2, "emp_name" : "Amit", "salary" : 12000 }
+{ "emp_id" : 3, "emp_name" : "James", "salary" : 20000 }
+{ "emp_id" : 4, "emp_name" : "Jit", "salary" : 16000 }
+{ "emp_id" : 5, "emp_name" : "Rahul", "salary" : 15000 }
+{ "emp_id" : 6, "emp_name" : "Thomas", "salary" : 10000 }
+{ "emp_id" : 7, "emp_name" : "Rohit", "salary" : 7500 }
+{ "emp_id" : 8, "emp_name" : "Sushil", "salary" : 9000 }
+{ "emp_id" : 9, "emp_name" : "Sachin", "salary" : 40000 }
+{ "emp_id" : 10, "emp_name" : "Sunil", "salary" : 6000 }
+
+c) List names of employees who are not managers.
+> db.employee.find({"designation": {$ne: "Manager"}}).pretty();
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810919"),
+        "emp_id" : 1,
+        "emp_name" : "Ajit",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2015-10-09T00:00:00Z"),
+        "salary" : 30000,
+        "hobbies" : [
+                "Volunteering",
+                "Community Involvement"
+        ],
+        "department" : "HR"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091a"),
+        "emp_id" : 2,
+        "emp_name" : "Amit",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2016-04-21T00:00:00Z"),
+        "salary" : 12000,
+        "hobbies" : [
+                "Writing",
+                "Reading",
+                "Paiting"
+        ],
+        "department" : "Marketing"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091d"),
+        "emp_id" : 5,
+        "emp_name" : "Rahul",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2015-11-10T00:00:00Z"),
+        "salary" : 15000,
+        "hobbies" : [
+                "Dance",
+                "Blogging",
+                "Reading"
+        ],
+        "department" : "Production"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091e"),
+        "emp_id" : 6,
+        "emp_name" : "Thomas",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-05-27T00:00:00Z"),
+        "salary" : 10000,
+        "hobbies" : [
+                "Learning languages",
+                "Blogging",
+                "Travel"
+        ],
+        "department" : "Sales"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810920"),
+        "emp_id" : 8,
+        "emp_name" : "Sushil",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-12-12T00:00:00Z"),
+        "salary" : 9000,
+        "hobbies" : [
+                "Podcasting",
+                "Blogging"
+        ],
+        "department" : "Sales"
+}
+
+d) List the names of employees whose employee numbers are 1,3,7,9.
+> db.employee.find({$or: [{emp_id: 1}, {emp_id: 3}, {emp_id: 7}, {emp_id: 9}]}, {_id: 0, emp_name: 1});
+{ "emp_name" : "Ajit" }
+{ "emp_name" : "James" }
+{ "emp_name" : "Rohit" }
+{ "emp_name" : "Sachin" }
+
+e) List the names of all employees those having reading as a secound hobby.
+> db.employee.find({'hobbies.1': 'Reading'}).pretty();
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091a"),
+        "emp_id" : 2,
+        "emp_name" : "Amit",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2016-04-21T00:00:00Z"),
+        "salary" : 12000,
+        "hobbies" : [
+                "Writing",
+                "Reading",
+                "Paiting"
+        ],
+        "department" : "Marketing"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091f"),
+        "emp_id" : 7,
+        "emp_name" : "Rohit",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2020-10-28T00:00:00Z"),
+        "salary" : 7500,
+        "hobbies" : [
+                "Painting",
+                "Reading",
+                "Listening to music"
+        ],
+        "department" : "Production"
+}
+
+f) List employee names for those who have joined between 30 June and 31 Dec 2015.
+> db.employee.find({hire_date: {$gte: ISODate("2015-06-30"), $lte: ISODate("2015-12-31")}}).pretty();
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810919"),
+        "emp_id" : 1,
+        "emp_name" : "Ajit",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2015-10-09T00:00:00Z"),
+        "salary" : 30000,
+        "hobbies" : [
+                "Volunteering",
+                "Community Involvement"
+        ],
+        "department" : "HR"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091b"),
+        "emp_id" : 3,
+        "emp_name" : "James",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2015-12-14T00:00:00Z"),
+        "salary" : 20000,
+        "hobbies" : [
+                "Learning languages",
+                "Blogging",
+                "Travel"
+        ],
+        "department" : "HR"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091d"),
+        "emp_id" : 5,
+        "emp_name" : "Rahul",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2015-11-10T00:00:00Z"),
+        "salary" : 15000,
+        "hobbies" : [
+                "Dance",
+                "Blogging",
+                "Reading"
+        ],
+        "department" : "Production"
+}
+
+g) List the different designations in the company.
+> db.employee.distinct('designation');
+[ "Analysts", "Manager", "Salesmen" ]
+
+h) List the emp_id, emp_name, salary of all employees whose salary is less than 10000.
+> db.employee.find({salary: {$lt: 10000}}, {_id: 0, emp_id: 1, emp_name: 1, salary: 1});
+{ "emp_id" : 7, "emp_name" : "Rohit", "salary" : 7500 }
+{ "emp_id" : 8, "emp_name" : "Sushil", "salary" : 9000 }
+{ "emp_id" : 10, "emp_name" : "Sunil", "salary" : 6000 }
+
+i) List the name and designation of the employee who works in production department.
+> db.employee.find({department: 'Production'}, {_id: 0, emp_name: 1, designation: 1});
+{ "emp_name" : "Jit", "designation" : "Manager" }
+{ "emp_name" : "Rahul", "designation" : "Analysts" }
+{ "emp_name" : "Rohit", "designation" : "Manager" }
+{ "emp_name" : "Sachin", "designation" : "Manager" }
+
+j) List the all employees whose name start with "A" letter.
+> db.employee.find({emp_name: /^A/}).pretty();
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810919"),
+        "emp_id" : 1,
+        "emp_name" : "Ajit",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2015-10-09T00:00:00Z"),
+        "salary" : 30000,
+        "hobbies" : [
+                "Volunteering",
+                "Community Involvement"
+        ],
+        "department" : "HR"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091a"),
+        "emp_id" : 2,
+        "emp_name" : "Amit",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2016-04-21T00:00:00Z"),
+        "salary" : 12000,
+        "hobbies" : [
+                "Writing",
+                "Reading",
+                "Paiting"
+        ],
+        "department" : "Marketing"
+}
+
+k) List the all employees whose name containing "sh" string.
+> db.employee.find({emp_name: /sh/}).pretty();
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810920"),
+        "emp_id" : 8,
+        "emp_name" : "Sushil",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-12-12T00:00:00Z"),
+        "salary" : 9000,
+        "hobbies" : [
+                "Podcasting",
+                "Blogging"
+        ],
+        "department" : "Sales"
+}
+
+l) List the all employees whose names either start or end with “S”.
+> db.employee.find({$or: [{emp_name: /^S/}, {emp_name: /s$/}]}).pretty();
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091b"),
+        "emp_id" : 3,
+        "emp_name" : "James",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2015-12-14T00:00:00Z"),
+        "salary" : 20000,
+        "hobbies" : [
+                "Learning languages",
+                "Blogging",
+                "Travel"
+        ],
+        "department" : "HR"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091e"),
+        "emp_id" : 6,
+        "emp_name" : "Thomas",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-05-27T00:00:00Z"),
+        "salary" : 10000,
+        "hobbies" : [
+                "Learning languages",
+                "Blogging",
+                "Travel"
+        ],
+        "department" : "Sales"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810920"),
+        "emp_id" : 8,
+        "emp_name" : "Sushil",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-12-12T00:00:00Z"),
+        "salary" : 9000,
+        "hobbies" : [
+                "Podcasting",
+                "Blogging"
+        ],
+        "department" : "Sales"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810921"),
+        "emp_id" : 9,
+        "emp_name" : "Sachin",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2015-05-05T00:00:00Z"),
+        "salary" : 40000,
+        "hobbies" : [
+                "Vlogging",
+                "Travel"
+        ],
+        "department" : "Production"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810922"),
+        "emp_id" : 10,
+        "emp_name" : "Sunil",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2019-07-14T00:00:00Z"),
+        "salary" : 6000,
+        "hobbies" : [
+                "Coding"
+        ],
+        "department" : "HR"
+}
+
+m) List the names of employees whose department is not HR.
+> db.employee.find({department: {$ne: 'HR'}}).pretty();
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091a"),
+        "emp_id" : 2,
+        "emp_name" : "Amit",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2016-04-21T00:00:00Z"),
+        "salary" : 12000,
+        "hobbies" : [
+                "Writing",
+                "Reading",
+                "Paiting"
+        ],
+        "department" : "Marketing"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091c"),
+        "emp_id" : 4,
+        "emp_name" : "Jit",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2017-06-18T00:00:00Z"),
+        "salary" : 16000,
+        "hobbies" : [
+                "Volunteering",
+                "Coding",
+                "Painting"
+        ],
+        "department" : "Production"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091d"),
+        "emp_id" : 5,
+        "emp_name" : "Rahul",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2015-11-10T00:00:00Z"),
+        "salary" : 15000,
+        "hobbies" : [
+                "Dance",
+                "Blogging",
+                "Reading"
+        ],
+        "department" : "Production"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091e"),
+        "emp_id" : 6,
+        "emp_name" : "Thomas",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-05-27T00:00:00Z"),
+        "salary" : 10000,
+        "hobbies" : [
+                "Learning languages",
+                "Blogging",
+                "Travel"
+        ],
+        "department" : "Sales"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091f"),
+        "emp_id" : 7,
+        "emp_name" : "Rohit",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2020-10-28T00:00:00Z"),
+        "salary" : 7500,
+        "hobbies" : [
+                "Painting",
+                "Reading",
+                "Listening to music"
+        ],
+        "department" : "Production"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810920"),
+        "emp_id" : 8,
+        "emp_name" : "Sushil",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-12-12T00:00:00Z"),
+        "salary" : 9000,
+        "hobbies" : [
+                "Podcasting",
+                "Blogging"
+        ],
+        "department" : "Sales"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810921"),
+        "emp_id" : 9,
+        "emp_name" : "Sachin",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2015-05-05T00:00:00Z"),
+        "salary" : 40000,
+        "hobbies" : [
+                "Vlogging",
+                "Travel"
+        ],
+        "department" : "Production"
+}
+
+n) List the number of employees working in sales department.
+> db.employee.find({department: 'Sales'}).pretty();
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091e"),
+        "emp_id" : 6,
+        "emp_name" : "Thomas",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-05-27T00:00:00Z"),
+        "salary" : 10000,
+        "hobbies" : [
+                "Learning languages",
+                "Blogging",
+                "Travel"
+        ],
+        "department" : "Sales"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810920"),
+        "emp_id" : 8,
+        "emp_name" : "Sushil",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-12-12T00:00:00Z"),
+        "salary" : 9000,
+        "hobbies" : [
+                "Podcasting",
+                "Blogging"
+        ],
+        "department" : "Sales"
+}
+
+o) List the number of designations available in the EMP collections.
+> db.employee.distinct("designation").length;
+3
+
+p) List the emp_id, emp_name, salary of all employees whose salary in between 10000 to 20000.
+> db.employee.find({salary: {$gt: 10000, $lt: 20000}}, {_id: 0, emp_id: 1, emp_name: 1, salary: 1});
+{ "emp_id" : 2, "emp_name" : "Amit", "salary" : 12000 }
+{ "emp_id" : 4, "emp_name" : "Jit", "salary" : 16000 }
+{ "emp_id" : 5, "emp_name" : "Rahul", "salary" : 15000 }
+
+q) List the emp_id,emp_name of all employees whose salary is gretter than or equal to 15000.
+> db.employee.find({salary: {$gte: 15000}}, {_id: 0, emp_id: 1, emp_name: 1});
+{ "emp_id" : 1, "emp_name" : "Ajit" }
+{ "emp_id" : 3, "emp_name" : "James" }
+{ "emp_id" : 4, "emp_name" : "Jit" }
+{ "emp_id" : 5, "emp_name" : "Rahul" }
+{ "emp_id" : 9, "emp_name" : "Sachin" }
+
+r) List details of employees whose department is Sales and salary is 10000.
+> db.employee.find({$and: [{department: 'Sales'}, {salary: 10000}]}).pretty();
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091e"),
+        "emp_id" : 6,
+        "emp_name" : "Thomas",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-05-27T00:00:00Z"),
+        "salary" : 10000,
+        "hobbies" : [
+                "Learning languages",
+                "Blogging",
+                "Travel"
+        ],
+        "department" : "Sales"
+}
+
+s) List the names of employees those having reading and painting hobbies.
+> db.employee.find({$and: [{hobbies: 'Reading'}, {hobbies: 'Painting'}]}).pretty();
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091f"),
+        "emp_id" : 7,
+        "emp_name" : "Rohit",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2020-10-28T00:00:00Z"),
+        "salary" : 7500,
+        "hobbies" : [
+                "Painting",
+                "Reading",
+                "Listening to music"
+        ],
+        "department" : "Production"
+}
+
+t) List the first hobby of all employees from the employee collection.
+> db.employee.find({}, {hobbies: {$slice: 1}}).pretty();
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810919"),
+        "emp_id" : 1,
+        "emp_name" : "Ajit",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2015-10-09T00:00:00Z"),
+        "salary" : 30000,
+        "hobbies" : [
+                "Volunteering"
+        ],
+        "department" : "HR"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091a"),
+        "emp_id" : 2,
+        "emp_name" : "Amit",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2016-04-21T00:00:00Z"),
+        "salary" : 12000,
+        "hobbies" : [
+                "Writing"
+        ],
+        "department" : "Marketing"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091b"),
+        "emp_id" : 3,
+        "emp_name" : "James",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2015-12-14T00:00:00Z"),
+        "salary" : 20000,
+        "hobbies" : [
+                "Learning languages"
+        ],
+        "department" : "HR"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091c"),
+        "emp_id" : 4,
+        "emp_name" : "Jit",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2017-06-18T00:00:00Z"),
+        "salary" : 16000,
+        "hobbies" : [
+                "Volunteering"
+        ],
+        "department" : "Production"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091d"),
+        "emp_id" : 5,
+        "emp_name" : "Rahul",
+        "designation" : "Analysts",
+        "hire_date" : ISODate("2015-11-10T00:00:00Z"),
+        "salary" : 15000,
+        "hobbies" : [
+                "Dance"
+        ],
+        "department" : "Production"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091e"),
+        "emp_id" : 6,
+        "emp_name" : "Thomas",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-05-27T00:00:00Z"),
+        "salary" : 10000,
+        "hobbies" : [
+                "Learning languages"
+        ],
+        "department" : "Sales"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad381091f"),
+        "emp_id" : 7,
+        "emp_name" : "Rohit",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2020-10-28T00:00:00Z"),
+        "salary" : 7500,
+        "hobbies" : [
+                "Painting"
+        ],
+        "department" : "Production"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810920"),
+        "emp_id" : 8,
+        "emp_name" : "Sushil",
+        "designation" : "Salesmen",
+        "hire_date" : ISODate("2018-12-12T00:00:00Z"),
+        "salary" : 9000,
+        "hobbies" : [
+                "Podcasting"
+        ],
+        "department" : "Sales"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810921"),
+        "emp_id" : 9,
+        "emp_name" : "Sachin",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2015-05-05T00:00:00Z"),
+        "salary" : 40000,
+        "hobbies" : [
+                "Vlogging"
+        ],
+        "department" : "Production"
+}
+{
+        "_id" : ObjectId("612b0e1cc934ec1ad3810922"),
+        "emp_id" : 10,
+        "emp_name" : "Sunil",
+        "designation" : "Manager",
+        "hire_date" : ISODate("2019-07-14T00:00:00Z"),
+        "salary" : 6000,
+        "hobbies" : [
+                "Coding"
+        ],
+        "department" : "HR"
+}
+
+u) List the names of all employees those having three different hobbies.
+> db.employee.find({hobbies: {$size: 3}}, {_id: 0, emp_name: 1});
+{ "emp_name" : "Amit" }
+{ "emp_name" : "James" }
+{ "emp_name" : "Jit" }
+{ "emp_name" : "Rahul" }
+{ "emp_name" : "Thomas" }
+{ "emp_name" : "Rohit" }
