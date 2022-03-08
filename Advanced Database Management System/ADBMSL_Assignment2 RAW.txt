@@ -1,0 +1,71 @@
+use Company
+
+db.createCollection("customer")
+
+db.customer.insert([
+{
+    "_id" : ObjectId("54265694517b30434f6a2bdc"), 
+    "custID" : "A123", 
+    
+    "Amount" : 500, 
+    "status" : "A"  
+},
+{
+    "_id" : ObjectId("542656eb517b30434f6a2bdd"),
+    "custID" : "A123",
+    "Amount" : 250, 
+    "status" : "A"
+},
+{
+    "_id" : ObjectId("54265726517b30434f6a2bde"),
+    "custID" : "B212",
+    "Amount" : 200, 
+    "status" : "A"
+},
+{
+    "_id" : ObjectId("54265757517b30434f6a2bdf"), 
+    "custID" : "A123", 
+    "Amount" : 300, 
+    "status" : "D"
+}])
+
+// Part A
+
+// a) Find the total amount of each customer.
+db.customer.aggregate([
+    { $group : { _id : "$custID", total : { $sum : "$Amount" } } }
+])
+
+// b) Find the total amount of each customer whose status is A.
+db.customer.aggregate([
+    { $match : { status : "A" } },
+    { $group : { _id : "$custID", total : { $sum : "$Amount" } } }
+])
+
+// c) Find the minimum total amount of each customer whose Status is A.
+db.customer.aggregate([
+    { $match : { status : "A" } },
+    { $group : { _id : "$custID", min_total : { $min : "$Amount"} } }
+])
+
+// d) Find the maximum total amount of each customer whose Status is A.
+db.customer.aggregate([
+    { $match : { status : "A" } },
+    { $group : { _id : "$custID", max_total : { $max : "$Amount" } } }
+])
+
+// e) Find the average total amount of each customer whose Status is A.
+db.customer.aggregate([
+    { $match : { status : "A" } },
+    { $group : { _id : "$custID", avg_total : { $avg : "$Amount" } } }
+])
+
+// Part B
+// f) Create index on custID.
+db.customer.createIndex({ custID : 1 })
+
+// g) Execute getIndexes.
+db.customer.getIndexes()
+
+// h) Drop the index created.
+db.customer.dropIndex({ custID : 1 })
