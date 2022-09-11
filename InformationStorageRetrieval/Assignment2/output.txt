@@ -1,0 +1,31 @@
+// Test Case 1
+Single-pass Algorithm for clustering of files
+
+Select an option
+1) Cluster overlapping
+2) Cluster disjoint
+1
+
+Enter new cluster name: c1
+Enter new cluster name: c2
+Enter new cluster name: c3
+c1 -> d1 d2 d4
+c2 -> d3 d4
+c3 -> d5
+
+
+
+// Test Case 2
+Single-pass Algorithm for clustering of files
+
+Select an option
+1) Cluster overlapping
+2) Cluster disjoint
+2
+
+Enter new cluster name: c1
+Enter new cluster name: c2
+Enter new cluster name: c3
+c1 -> d1 d2 d4
+c2 -> d3
+c3 -> d5
