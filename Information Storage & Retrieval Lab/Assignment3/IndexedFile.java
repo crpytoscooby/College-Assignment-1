@@ -3,13 +3,14 @@ import java.io.*;
 
 class Document {
     String name;
-    Set<String> token;
+    Map<String, List<Integer>> token;
 
     Document(String fileName) throws Exception {
         name = fileName;
-        token = new HashSet<>();
+        token = new HashMap<>();
 
-        String pathName = "C:\\Users\\Denzil\\IdeaProjects\\Assignment\\src\\InputFolder\\" + fileName + ".txt";
+        // location	C:\Users\HP\eclipse-workspace\ASSIGNMNET3\src\IndexedFile.java
+        String pathName = "C:\\Users\\HP\\eclipse-workspace\\ASSIGNMNET3\\src\\" + fileName + ".txt";
         File myFile = new File(pathName);
         BufferedReader br = new BufferedReader(new FileReader(myFile));
         String st = br.readLine();
@@ -21,13 +22,19 @@ class Document {
         }
 
         String text = removeSpecialChars(sb.toString());
+        int index = 0;
         for (String word : text.split(" ")) {
-            token.add(word);
+            if (!token.containsKey(word)) {
+                token.put(word, new ArrayList<>());
+            }
+            List<Integer> list = token.get(word);
+            list.add(index);
+            token.put(word, list);
+            index++;
         }
         removeStopWords(token);
     }
 
-    // same as assignment 1 conflation algorithm
     public String removeSpecialChars(String text) {
         String tempText = text.toLowerCase();
         String[] skips = {".", ",", ":", ";", "'", "\"", "-"};
@@ -41,13 +48,12 @@ class Document {
         return tempText;
     }
 
-    // same as assignment 1 conflation algorithm
-    public void removeStopWords(Set<String> token) throws Exception {
-        File myFile = new File("C:\\Users\\Denzil\\IdeaProjects\\Assignment\\src\\stopwords.txt");
+    public void removeStopWords(Map<String, List<Integer>> token2) throws Exception {
+        File myFile = new File("C:\\Users\\HP\\eclipse-workspace\\ASSIGNMNET3\\src\\stopwords.txt");
         BufferedReader br = new BufferedReader(new FileReader(myFile));
         String st = br.readLine();
         while (st != null) {
-            token.remove(st);
+            token2.remove(st);
             st = br.readLine();
         }
     }
@@ -55,44 +61,46 @@ class Document {
 
 public class IndexedFile {
 
-    static TreeMap<String, List<Document>> indexedFileTable;
+    static Map<String, List<Integer>> indexedFileTable;
 
     public static void main(String[] args) throws Exception {
-        indexedFileTable = new TreeMap<>();
+        indexedFileTable = new HashMap<>();
         generateIndexedFile();
-        displayIndexedFile();
+        
+        File indexes = new File("C:\\Users\\HP\\eclipse-workspace\\ASSIGNMNET3\\src\\indexes.txt");
+        BufferedWriter bw = new BufferedWriter(new FileWriter(indexes));
+
+        for (String key : indexedFileTable.keySet()) {
+            String text = key + " : " + indexedFileTable.get(key);
+            bw.write(text);
+            bw.write("\n");
+        }
+        bw.close();
+
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Word to be Searched: ");
+        String word = sc.next();
+        if (indexedFileTable.containsKey(word)) {
+            for (int index : indexedFileTable.get(word)) {
+                System.out.println("The word " + word + " is present at position : " + index);
+            }
+        } else {
+            System.out.println("Word not found");
+        }
+        sc.close();
     }
 
     public static void generateIndexedFile() throws Exception {
         Document document1 = new Document("d1");
-        insertInTable(document1);
-        Document document2 = new Document("d2");
-        insertInTable(document2);
-        Document document3 = new Document("d3");
-        insertInTable(document3);
-        Document document4 = new Document("d4");
-        insertInTable(document4);
+        insertInTable(document1.token);
     }
 
-    public static void displayIndexedFile() {
-        for (String key : indexedFileTable.keySet()) {
-            System.out.print(key + " : ");
-            for (Document document : indexedFileTable.get(key)) {
-                System.out.print(document.name + " ");
+    public static void insertInTable(Map<String, List<Integer>> map) {
+        for (String key : map.keySet()) {
+            if (!indexedFileTable.containsKey(key)) {
+                indexedFileTable.put(key, new ArrayList<>());
             }
-            System.out.println();
-        }
-    }
-
-    private static void insertInTable(Document document) {
-        Set<String> set = document.token;
-        for (String word : set) {
-            if (!indexedFileTable.containsKey(word)) {
-                indexedFileTable.put(word, new ArrayList<>());
-            }
-            List<Document> documentList = indexedFileTable.get(word);
-            documentList.add(document);
-            indexedFileTable.put(word, documentList);
+            indexedFileTable.put(key, map.get(key));
         }
     }
 }
