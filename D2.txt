@@ -1,0 +1,180 @@
+ import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+ import java.io.FileNotFoundException;
+ import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+ import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.*;
+
+ public class InvertedFile
+ {
+public static void displayIndex(String[] invertedData,String[][] docno, int sizeInvertedData)throws IOException
+     {  
+          int i,cnt=0;
+ InputStreamReader ins=new InputStreamReader(System.in);
+ BufferedReader br=new BufferedReader(ins);
+          System.out.print("Enter Word to be Searched: ");
+          String search=br.readLine();
+          for(i=0;i< sizeInvertedData;i++)
+        {
+         if(docno[i][0].equals(search))
+         {
+         System.out.print("The word "+ docno[i][0]+" is present at position "+docno[i][1]+ "\n");
+         cnt++;
+         }
+        }
+     
+          if(cnt==0)
+         System.out.println("Word NOt Present!");
+         
+          System.out.println("\nAll indexes present in file :\nC:\\Users\\dell\\Desktop\\indexes.txt");
+         
+     }  
+public static void indexing(String fname,String[] invertedData,String[][] docno, int sizeInvertedData)  
+     {  
+          try  
+          {  
+          BufferedReader br = new BufferedReader(new FileReader(fname));  
+               String data = "", line = br.readLine();  
+               while(line!=null)  
+               {  
+                    data+=line+" ";  
+                    line=br.readLine();  
+               }  
+               String[] st=data.split("[ ,.]");  
+               int i=0,x=0;
+               PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\dell\\Desktop\\Aish\\programs\\BE SEM1 ISR\\Assignment3\\indexes.txt",true)));
+               while(i<sizeInvertedData)
+               {
+              for(int j=0;j<st.length;j++)
+              {
+              if(invertedData[i].equals(st[j]))
+              {
+              docno[x][0]=invertedData[i];
+              docno[x][1]=String.valueOf(j);
+             
+              pw.println(docno[x][0]+" "+ docno[x][1]);
+              x++;
+              }
+              }
+              i++;
+               }
+               pw.close();
+               displayIndex(invertedData,docno,x);  
+          }
+          catch (Exception e)
+          {  
+               e.printStackTrace();  
+          }  
+     }  
+     static class Pair
+     {
+         String word;
+         int count;
+
+         Pair(String word, int count)
+         {
+             this.word = word;
+             this.count = count;
+         }
+     }
+     public static void removeStopWords(Map<String, Integer> map) throws Exception
+     {
+         File myFile = new File("C:\\Users\\dell\\Desktop\\Aish\\programs\\BE SEM1 ISR\\Assignment3\\stopwords.txt");
+         Set<String> set = new HashSet<>();
+         BufferedReader br = new BufferedReader(new FileReader(myFile));
+         String st = br.readLine();
+         while (st != null)
+         {
+             set.add(st);
+             st = br.readLine();
+         }
+         for (String stopWord : set)
+         {
+             map.remove(stopWord);
+         }
+     }
+
+    public static void countWords(String text, Map<String, Integer> map)
+     {
+         String tempText = text.toLowerCase();
+         String[] skips = {".", ",", ":", ";", "'", "\"", "-"};
+         for (String c : skips)
+         {
+             if (c.equals("-"))  
+                 tempText = tempText.replace(c, " ");
+             
+             else
+                 tempText = tempText.replace(c, "");
+             
+         }
+         for (String word : tempText.split(" "))
+         {
+             if (!map.containsKey(word))
+             {
+                 map.put(word, 0);
+             }
+             map.put(word, map.get(word) + 1);
+         }
+     }
+
+     public static void main(String[] args) throws Exception
+     {  
+         try
+         {
+        String fname="";  
+    String invertedData[]=new String [100];
+    String docno[][]=new String[100][10];  
+    InputStreamReader ins=new InputStreamReader(System.in);
+    BufferedReader br=new BufferedReader(ins);
+   
+
+    fname="C:\\Users\\dell\\Desktop\\Aish\\programs\\BE SEM1 ISR\\Assignment3\\input.txt";
+    BufferedReader file = new BufferedReader(new FileReader("C:\\Users\\dell\\Desktop\\Aish\\programs\\BE SEM1 ISR\\Assignment3\\input.txt"));
+    String text;
+    int i=0;
+    while((text = file.readLine()) != null)
+    {
+           Map<String, Integer> map = new HashMap<>();
+           countWords(text, map);
+           removeStopWords(map);
+           
+           PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> (b.count - a.count));
+           for (String key : map.keySet())
+           {
+               if (map.get(key) >= 1)
+               {
+                   pq.add(new Pair(key, map.get(key)));
+               }
+           }
+
+           for (Pair p : pq)
+           {
+            invertedData[i]=p.word;
+            i++;
+           }
+    }
+    indexing(fname,invertedData,docno,i);
+    file.close();
+         }
+         catch(FileNotFoundException e)
+  {
+  System.out.println("\nERROR : File not Found !!!");
+  }
+     }
+ }
+
+/*
+OUTPUT:
+
+Enter Word to be Searched: computer
+The word computer is present at position 18
+The word computer is present at position 30
+The word computer is present at position 59
+
+All indexes present in file :
+C:\Users\dell\Desktop\indexes.txt
+*/
